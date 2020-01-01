@@ -1,0 +1,57 @@
+<?php //die('ok'); ?>
+<?php 
+$productCollection = $block->getProductCollection();
+echo "<table border='1'>";
+echo "<tr>";
+echo "<th>Id</th>";
+echo "<th>Image</th>";
+echo "<th>Sku</th>";
+echo "<th>Name</th>";
+echo "<th>Quantity</th>";
+echo "<th>Stock</th>";
+echo "<th>Price</th>";
+echo "</tr>";
+/*foreach ($productCollection as $product) {
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$store = $objectManager->get('Magento\Store\Model\StoreManagerInterface')->getStore();
+	$image = $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
+}*/
+foreach ($productCollection->getData() as $product){
+	$id = $product['entity_id'];
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$image= '';
+	$sku = $product['sku'];
+	$product = $objectManager->create('Magento\Catalog\Model\Product')->load($id);
+	$name = $product->getName();
+	$productimages = $product->getMediaGalleryImages();
+	foreach ($productimages as $productimage) {
+		$image = $productimage['url'];
+	}
+	$StockState = $objectManager->get('\Magento\CatalogInventory\Api\StockStateInterface');
+	$qty = $StockState->getStockQty($id, $product->getStore()->getWebsiteId());
+	$productStockObj = $objectManager->get('Magento\CatalogInventory\Api\StockRegistryInterface')->getStockItem($id);
+	$stock = $productStockObj->getData('is_in_stock');
+	if($stock == 1)
+	{
+		$stock = "In Stock";
+	}
+	else
+	{
+		$stock = "Out of Stock";
+	}
+	$price = $product->getPrice();
+
+	echo "<tr>";
+	echo "<td>".$id."</td>"; ?>
+	<td><img src='<?php echo $image; ?> ' height="100px" width="100px"/></td> 
+	<?php echo "<td>".$sku."</td>";
+	echo "<td>".$name."</td>";
+	echo "<td>".$qty."</td>";
+	echo "<td>".$stock."</td>";
+	echo "<td>".$price."</td>";
+	echo "</tr>";
+    
+    //print_r($product->getData());     
+ }
+echo "</table>";
+  ?>

@@ -1,0 +1,22 @@
+{
+    "name": "product/collection",
+    "description": "Collection",
+    "type": "composer-plugin",
+    "license": "DEV",
+    "authors": [
+        {
+            "name": "Vishal Sojitra",
+            "email": "vishalsojitra431@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {"php": ">=5.3.0"},
+    "autoload": {
+        "files": [
+          "registration.php"
+        ],
+        "psr-0": {
+            "collection": "src/"
+        }
+    }
+}
