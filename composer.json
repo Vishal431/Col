@@ -2,7 +2,7 @@
     "name": "product/collection",
     "description": "Collection",
     "type": "composer-plugin",
-    "license": "DEV",
+    "license": "MIT",
     "authors": [
         {
             "name": "Vishal Sojitra",
